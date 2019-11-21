@@ -14,7 +14,7 @@ This tutorial will cover how to setup a VLAN interface for TSN application.
 
 VLAN is supported in Linux\* via virtual networking interface. Any packet sent
 through the VLAN interface is automatically tagged with the VLAN information
-(such as  ID and PCP). Any packet received from that interface belongs to the
+(such as  ID and PCP). Any packet received from that interface belongs to the
 VLAN.
 
 Configuring the Interface
@@ -22,14 +22,14 @@ Configuring the Interface
 
 The VLAN interface is created using the ip-link command from iproute2 project
 which is pre-installed by the majority of Linux distributions. The following
-example creates a VLAN interface for TSN usage. The example assumes *eth0* is the
+example creates a VLAN interface for TSN usage. The example assumes *eth0* is the
 physical interface.
 
 .. code:: console
 
    sudo ip link add link eth0 name eth0.5 type vlan id 5 egress-qos-map 2:2 3:3
 
-The egress-qos-map argument defines a mapping of Linux internal packet priority
+The egress-qos-map argument defines a mapping of Linux internal packet priority
 (SO_PRORITY) to VLAN header PCP field for outgoing frames. The format is
 FROM:TO with multiple mappings separated by spaces. This example maps
 SO_PRIORITY 2 into PCP 2 and SO_PRIORITY 3 into PCP 3. For further information

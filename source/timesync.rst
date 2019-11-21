@@ -4,7 +4,7 @@ Synchronizing Time with Linux\* PTP
 Introduction
 ------------
 
-Time synchronization is one of the core functionalities of TSN, and it is
+Time synchronization is one of the core functionalities of TSN, and it is
 specified by IEEE 802.1AS, also known as Generalized Precision Time Protocol
 (gPTP). gPTP is a profile from IEEE 1588, also known as Precision Time Protocol
 (PTP). gPTP consists of simplifications and constraints to PTP to optimize it
@@ -18,9 +18,9 @@ most popular implementation of PTP. It supports several profiles including gPTP
 and AVNU automotive profile. Linux PTP provides some tools to carry out time
 synchronization:
 
-* ptp4l: daemon that synchronizes the PTP Hardware Clock (PHC) from the NIC;
+* ptp4l: daemon that synchronizes the PTP Hardware Clock (PHC) from the NIC;
 
-* phc2sys: daemon that synchronizes the PHC and the System clock;
+* phc2sys: daemon that synchronizes the PHC and the System clock;
 
 * pmc: utility tool to configure ptp4l in run-time.
 
@@ -69,7 +69,7 @@ set so ptp4l converges faster when "time jumps" occur (more on this later). The
 ``-m`` option enables log messages on standard output.
 
 By default, ptp4l triggers the BMCA to determine if the PHC can be elected
-GM. To force a particular role, check the ``masterOnly`` and ``slaveOnly``
+GM. To force a particular role, check the ``masterOnly`` and ``slaveOnly``
 configuration options from ptp4l. For further details, see ptp4l(8) manpage.
 
 Run this step in all end-points of the network.
@@ -77,14 +77,14 @@ Run this step in all end-points of the network.
 Synchronizing the System Clock
 ------------------------------
 
-The System clock synchronization step is mandatory only for those systems where
+The System clock synchronization step is mandatory only for those systems where
 applications rely on system clock to schedule traffic or present data (such as
 AVTP plugins from ALSA and GStreamer frameworks).
 
 PHC time is set in TAI coordinate [1]_ while System clock time is set in UTC
 coordinate [2]_. To ensure System clocks (``CLOCK_REALTIME`` and ``CLOCK_TAI``)
 are properly set, configure the UTC-TAI offset in the system. This is done by a
-run-time option from ptp4l that is set via pmc utility tool as shown below.
+run-time option from ptp4l that is set via pmc utility tool as shown below.
 
 .. code:: console
 
@@ -107,7 +107,7 @@ command above PHC disciplines the System clock, that is, the system clock is
 adjusted. The ``--transportSpecific`` option is required when running phc2sys
 in a gPTP domain. The ``--step_threshold`` is set so phc2sys converges faster
 when "time jumps" occurs. Finally, the ``-w`` option makes phc2sys wait until
-ptp4l is synchronized and the ``-m`` option enables log messages on standard
+ptp4l is synchronized and the ``-m`` option enables log messages on standard
 output. For more information about phc2sys configuration option refer to
 phc2sys(8) manpage.
 
@@ -120,12 +120,12 @@ synchronized. The output for ptp4l is:
 
 .. code:: console
 
-        ptp4l[5374018.735]: rms  787 max 1208 freq -38601 +/- 1071 delay  -14 +/-   0
-        ptp4l[5374019.735]: rms 1314 max 1380 freq -36204 +/- 346 delay   -14 +/-   0
-        ptp4l[5374020.735]: rms  836 max 1106 freq -35734 +/-  31 delay   -14 +/-   0
-        ptp4l[5374021.736]: rms  273 max  450 freq -35984 +/-  97 delay   -14 +/-   0
-        ptp4l[5374022.736]: rms   50 max   82 freq -36271 +/-  64 delay   -14 +/-   0
-        ptp4l[5374023.736]: rms   81 max   86 freq -36413 +/-  17 delay   -14 +/-   0
+        ptp4l[5374018.735]: rms  787 max 1208 freq -38601 +/- 1071 delay  -14 +/-   0
+        ptp4l[5374019.735]: rms 1314 max 1380 freq -36204 +/- 346 delay   -14 +/-   0
+        ptp4l[5374020.735]: rms  836 max 1106 freq -35734 +/-  31 delay   -14 +/-   0
+        ptp4l[5374021.736]: rms  273 max  450 freq -35984 +/-  97 delay   -14 +/-   0
+        ptp4l[5374022.736]: rms   50 max   82 freq -36271 +/-  64 delay   -14 +/-   0
+        ptp4l[5374023.736]: rms   81 max   86 freq -36413 +/-  17 delay   -14 +/-   0
 
 The ``rms`` value reported by ptp4l once the slave has locked with the GM shows
 the root mean square of the time offset between the PHC and the GM clock. If
@@ -136,12 +136,12 @@ determines if the clocks are synchronized.
 
 .. code:: console
 
-        phc2sys[5374168.545]: CLOCK_REALTIME phc offset   -372582 s0 freq    +246 delay   6649
-        phc2sys[5374169.545]: CLOCK_REALTIME phc offset   -372832 s1 freq      -4 delay   6673
-        phc2sys[5374170.547]: CLOCK_REALTIME phc offset        68 s2 freq     +64 delay   6640
-        phc2sys[5374171.547]: CLOCK_REALTIME phc offset       -20 s2 freq      -3 delay   6687
-        phc2sys[5374172.547]: CLOCK_REALTIME phc offset        47 s2 freq     +58 delay   6619
-        phc2sys[5374173.548]: CLOCK_REALTIME phc offset       -40 s2 freq     -15 delay   6680
+        phc2sys[5374168.545]: CLOCK_REALTIME phc offset   -372582 s0 freq    +246 delay   6649
+        phc2sys[5374169.545]: CLOCK_REALTIME phc offset   -372832 s1 freq      -4 delay   6673
+        phc2sys[5374170.547]: CLOCK_REALTIME phc offset        68 s2 freq     +64 delay   6640
+        phc2sys[5374171.547]: CLOCK_REALTIME phc offset       -20 s2 freq      -3 delay   6687
+        phc2sys[5374172.547]: CLOCK_REALTIME phc offset        47 s2 freq     +58 delay   6619
+        phc2sys[5374173.548]: CLOCK_REALTIME phc offset       -40 s2 freq     -15 delay   6680
 
 The ``offset`` information reported by phc2sys shows the time offset between
 the PHC and the System clock. If phc2sys consistently reports ``offset`` lower
@@ -208,7 +208,7 @@ threshold. If the time jump is greater than ``n`` seconds, time is adjusted by
 stepping the clock (that means to adjust current time) instead of changing the
 frequency.
 
-However, stepping the clock has its own downsides as well. All timers set to
+However, stepping the clock has its own downsides as well. All timers set to
 expire between the current time and the new time expire once the time is set.
 This can affect the real-time behavior of the systems. So, use clock stepping
 carefully.
@@ -222,7 +222,7 @@ synchronize time using Linux PTP in different systems
 System time isn't synchronized with PHC
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If PHC offset never goes below hundreds (of nanoseconds)- or if it suddenly
+If PHC offset never goes below hundreds (of nanoseconds)- or if it suddenly
 spikes (as seen on phc2sys log) - leaving system time out of sync, this section
 provides some hints on what to do.
 
