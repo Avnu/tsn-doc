@@ -36,9 +36,8 @@ applications.
 System Requirements
 -------------------
 
-This tutorial has been validated on two Coffee Lake based desktop machines with
-Intel(R) Ethernet Controller I210 connected back-to-back and Linux
-kernel version 4.19.
+This tutorial has been validated on two desktop machines with Intel(R) Ethernet
+Controller I210 connected back-to-back and Linux kernel version 4.19.
 
 Plugins Installation
 --------------------
