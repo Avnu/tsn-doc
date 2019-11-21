@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/tsn/badge/?version=latest)](https://tsn.readthedocs.io/?badge=latest)
+
 # TSN Documentation Project for Linux
 
 Welcome to the Time-Sensitive Networking (TSN) Documentation project For Linux!
