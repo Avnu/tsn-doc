@@ -1,11 +1,11 @@
-Getting Started with AVB on Linux\*
+Getting Started with AVB on Linux\*
 ===================================
 
 Introduction
 ------------
 
-Audio/Video Bridging (AVB) is a set of IEEE standards enabling time-sensitive
-Audio/Video applications on Local Area Networks (LANs). AVB provides time
+Audio/Video Bridging (AVB) is a set of IEEE standards enabling time-sensitive
+Audio/Video applications on Local Area Networks (LANs). AVB provides time
 synchronization, bounded transmission latency, resource management, and
 application interoperability. Since these features can additionally be
 leveraged by non-AV systems, IEEE expanded its scope and rebranded AVB as
@@ -48,7 +48,7 @@ install the ALSA and GStreamer AVTP plugins on both machines.
 
 To complete the installation, follow the steps to get the source code and build
 the plugin. This includes installing the respective dependencies. Those should
-be packaged for most distros, though. For example, on Ubuntu\*, one can use to
+be packaged for most distros, though. For example, on Ubuntu\*, one can use to
 install them:
 
 .. code:: console
@@ -82,17 +82,17 @@ in the Linux system. While it comprises both kernel and user space components,
 the AVB examples covered in this tutorial only depend on the user space
 components which are the following:
 
-* alsa-lib provides the core libraries
+* alsa-lib provides the core libraries
 
-* alsa-utils provides utility tools for playback, capture, and mix audio
+* alsa-utils provides utility tools for playback, capture, and mix audio
   samples
 
-* alsa-plugins provides assorted plugins to the ALSA framework
+* alsa-plugins provides assorted plugins to the ALSA framework
 
 The AVTP plugin is part of alsa-plugins since version 1.1.8.
 
 This tutorial uses the latest version, 1.1.9. Follow these steps to get,
-build, and install the ALSA artifacts provided by those projects.
+build, and install the ALSA artifacts provided by those projects.
 
 Step 1: Start with the core libraries from alsa-lib project:
 
@@ -130,7 +130,7 @@ Step 3: Install the plugins from alsa-plugins project:
         make
         sudo make install
 
-Step 4: Regenerate the shared library cache after manually installing
+Step 4: Regenerate the shared library cache after manually installing
 libraries:
 
 .. code:: console
@@ -141,9 +141,9 @@ GStreamer Plugin
 ~~~~~~~~~~~~~~~~
 
 By its own definition, GStreamer "is a library for constructing graphs of
-media-handling components". It provides a pipeline, in which elements connect
+media-handling components". It provides a pipeline, in which elements connect
 to one another and data is processed as it flows. Elements are provided by
-GStreamer plugins. The AVTP plugin is provided by the gst-plugins-bad module.
+GStreamer plugins. The AVTP plugin is provided by the gst-plugins-bad module.
 As the AVTP plugin is not yet part of a GStreamer release, to build it is
 necessary to also build GStreamer core and gst-plugins-base from source.
 
@@ -158,7 +158,7 @@ Step 1: Install GStreamer core:
         sudo ninja -C build install
         sudo setcap cap_net_raw+ep /usr/local/bin/gst-launch-1.0
 
-Last command ensures that gst-launch-1.0 tool has permission to access network
+Last command ensures that gst-launch-1.0 tool has permission to access network
 over layer 2, as needed by TSN applications.
 
 Step 2: Install gst-plugins-base:
@@ -171,7 +171,7 @@ Step 2: Install gst-plugins-base:
         ninja -C build
         sudo ninja -C build install
 
-Step 3: Install gst-plugins-bad:
+Step 3: Install gst-plugins-bad:
 
 .. code:: console
 
@@ -198,20 +198,20 @@ The output contains standard information about the GStreamer AVTP plugin.
 
 Step 6: Install additional GStreamer modules:
 
-* gst-plugins-good provides basic elements used in this tutorial
+* gst-plugins-good provides basic elements used in this tutorial
 
-* gst-plugins-ugly is needed if using software encoder x264enc
+* gst-plugins-ugly is needed if using software encoder x264enc
 
-* gst-libav provides software decoders
+* gst-libav provides software decoders
 
-* gst-vaapi provides VA-API encoders and decoders
+* gst-vaapi provides VA-API encoders and decoders
 
 These modules can be installed from your favorite distro packages. For
 instance, to install all of the above on Ubuntu, run:
 
 .. code:: console
 
-        sudo apt install gstreamer1.0-plugins-ugly gstreamer1.0-plugins-good \
+        sudo apt install gstreamer1.0-plugins-ugly gstreamer1.0-plugins-good \
                 gstreamer1.0-libav gstreamer1.0-vaapi
 
 Step 7: To ensure GStreamer finds the plugins installed from packages or from
@@ -245,12 +245,12 @@ interface on both hosts is required. The VLAN interface is created using the
 distributions.
 
 This example transmits AVB streams on VLAN ID 5 and follows the priority
-mapping recommended by IEEE 802.1Q-2018. In this tutorial, the TSN-capable NIC is
+mapping recommended by IEEE 802.1Q-2018. In this tutorial, the TSN-capable NIC is
 represented by the *eth0* interface. Make sure to replace it with the interface
 name of the TSN-capable NIC in your system.
 
 Run the following command to create the *eth0.5* interface, which
-represents the VLAN interface in this tutorial:
+represents the VLAN interface in this tutorial:
 
 .. code:: console
 
@@ -266,7 +266,7 @@ For further information regarding VLAN in Linux, refer to :doc:`vlan`.
 Qdiscs Configuration
 ~~~~~~~~~~~~~~~~~~~~
 
-The TSN control plane is implemented through the Linux Traffic Control (TC)
+The TSN control plane is implemented through the Linux Traffic Control (TC)
 System. The transmission algorithms specified in Forwarding and Queuing for
 Time-Sensitive Streams (FQTSS) chapter from IEEE 802.1Q-2018 are supported via
 TC Queuing Disciplines (qdiscs). Three qdiscs are required to set up an AVB
@@ -314,12 +314,12 @@ Step 3: Configure the ETF qdiscs as children of CBS qdiscs.
 
         sudo tc qdisc add dev eth0 parent 7777:1 etf \
                 clockid CLOCK_TAI \
-                delta 500000 \
+                delta 500000 \
                 offload
 
         sudo tc qdisc add dev eth0 parent 8888:1 etf \
                 clockid CLOCK_TAI \
-                delta 500000 \
+                delta 500000 \
                 offload
 
 For further information regarding TSN qdiscs configuration refer
@@ -363,7 +363,7 @@ For further information regarding time synchronization, refer to
 AVB Audio Talker/Listener Examples
 ----------------------------------
 
-With software installed and system set up, you are ready to see AVB audio
+With software installed and system set up, you are ready to see AVB audio
 talker and listener applications in action. AVB Audio streaming is supported by
 both ALSA and GStreamer plugins.
 
@@ -374,7 +374,7 @@ Examples using ALSA Framework
 
 The ALSA AVTP Audio Format (AAF) plugin is a PCM plugin that uses AAF AVTPDUs
 to transmit/receive audio data through a TSN network. The plugin enables any
-existing ALSA-based application to operate as AVB talker or listener.
+existing ALSA-based application to operate as AVB talker or listener.
 
 * In playback mode, the plugin reads PCM samples from the audio buffer,
   encapsulates into AVTPDUs and transmits to the network, mimicking a typical
@@ -384,10 +384,10 @@ existing ALSA-based application to operate as AVB talker or listener.
   PCM samples, and presents them (at AVTP presentation time) to the application
   for rendering, mimicking a typical AVB Listener.
 
-Step 1: Add the AAF device to the ALSA configuration file (/etc/asound.conf)
-on both Talker and Listener hosts. The following configuration creates the AAF
+Step 1: Add the AAF device to the ALSA configuration file (/etc/asound.conf)
+on both Talker and Listener hosts. The following configuration creates the AAF
 device according to the AVB audio stream described in
-:ref:`qdiscs-config-label`. For a full description of AAF device
+:ref:`qdiscs-config-label`. For a full description of AAF device
 configuration options, refer to `ALSA AAF Plugin documentation
 <https://github.com/alsa-project/alsa-plugins/blob/master/doc/aaf.txt>`_.
 
@@ -397,36 +397,36 @@ VLAN interface you created in :ref:`vlan-config-label`.
 .. code:: console
 
         pcm.aaf0 {
-                type aaf
-                ifname eth0.5
-                addr 01:AA:AA:AA:AA:AA
-                prio 2
-                streamid AA:BB:CC:DD:EE:FF:000B
-                mtt 50000
-                time_uncertainty 1000
-                frames_per_pdu 12
-                ptime_tolerance 100
+                type aaf
+                ifname eth0.5
+                addr 01:AA:AA:AA:AA:AA
+                prio 2
+                streamid AA:BB:CC:DD:EE:FF:000B
+                mtt 50000
+                time_uncertainty 1000
+                frames_per_pdu 12
+                ptime_tolerance 100
         }
 
 Step 2: Run the *speaker-test* tool from alsa-utils to implement the AVB talker
 application. The tool generates a tone which is transmitted through the network
-as an AVTP stream by the aaf0 device.
+as an AVTP stream by the aaf0 device.
 
 On the Talker host run:
 
 .. code:: console
 
-        sudo speaker-test -p 25000 -F S16_BE -c 2 -r 48000 -D aaf0
+        sudo speaker-test -p 25000 -F S16_BE -c 2 -r 48000 -D aaf0
 
 Quick explanation about speaker-test arguments: ``-p`` configures ALSA period
 size, ``-F`` sets the sample format, ``-c`` the number of channels, ``-r`` the
-sampling rate, and ``-D`` the ALSA device. For more details check
+sampling rate, and ``-D`` the ALSA device. For more details check
 speaker-test(1) manpage.
 
-Step 3: While the AVB stream is being transmitted through the network, run the
+Step 3: While the AVB stream is being transmitted through the network, run the
 listener and play it back, using *aplay* and *arecord* tools from alsa-utils.
 These tools create a PCM loopback between two ALSA devices. In this case, the
-capture device is *aaf0* and the playback device is *default* (usually, this is
+capture device is *aaf0* and the playback device is *default* (usually, this is
 the main sound card in the system).
 
 On the listener host run:
@@ -448,19 +448,19 @@ If no sound is heard:
 
 If aplay fails with "Sample format non available":
 
-#. Some sound cards do not support big endian formats. It’s necessary to
-   convert the PCM samples to little endian before pushing them to your
+#. Some sound cards do not support big endian formats. It’s necessary to
+   convert the PCM samples to little endian before pushing them to your
    soundcard. This can be done by defining a converter device in
    /etc/asound.conf, on Listener, as shown below.
 
 .. code:: console
 
-        pcm.converter0 {
-                type linear
-                slave {
-                        pcm default
-                        format S16_LE
-                }
+        pcm.converter0 {
+                type linear
+                slave {
+                        pcm default
+                        format S16_LE
+                }
         }
 
 Use *converter0* as playback device instead of *default*.
@@ -476,7 +476,7 @@ elements can be categorized as:
 
 * *payloaders*: elements that encapsulate/decapsulate audio and video data
   into/from AVTPDUs. The plugin provides a pair of
-  payloader/depayloader elements for each AVTP format supported;
+  payloader/depayloader elements for each AVTP format supported;
 
 * *sink*: element receives AVTPDUs from upstream and sends them to the network;
 
@@ -506,7 +506,7 @@ while the rest of the command between the parenthesis describes the pipeline.
 The *!* sign refers to connecting two elements. Let’s check what each element
 in the pipeline does:
 
-* *audiotestsrc* generates a tone.
+* *audiotestsrc* generates a tone.
 
 * *audio/x-raw,format=S16BE,channels=2,rate=48000* is not a true element but a
   filter that defines the audio sample features *audiotestsrc* generates.
@@ -517,7 +517,7 @@ in the pipeline does:
 
 Note that AVTP-specific features, such as maximum transit time, time
 uncertainty, and stream ID, are set via the *avtpaafpay* element
-properties while network-specific features such as network interface and
+properties while network-specific features such as network interface and
 traffic priority are set via *avtpsink* element properties.
 
 The *processing-deadline* property set above defines an overall processing
@@ -531,7 +531,7 @@ To learn about a specific element utilized in the pipeline above, run:
 
         gst-inspect-1.0 <ELEMENT>
 
-Step 2: While the AVB stream is being transmitted through the network, run
+Step 2: While the AVB stream is being transmitted through the network, run
 the listener application to receive the stream and play it back.
 
 On the AVB listener:
@@ -540,15 +540,15 @@ On the AVB listener:
 
         gst-launch-1.0 clockselect. \( clock-id=realtime \
             avtpsrc ifname=eth0.5 address=01:AA:AA:AA:AA:AA ! \
-            queue max-size-buffers=0 max-size-time=0 ! \
+            queue max-size-buffers=0 max-size-time=0 ! \
             avtpaafdepay streamid=0xAABBCCDDEEFF000B ! audioconvert ! autoaudiosink \)
 
-The *avtpsrc* element receives AVTPDUs from the network
+The *avtpsrc* element receives AVTPDUs from the network
 and push them to the *avtpaafdepay* element which extracts the audio samples.
 The *autoaudiosink* automatically detects the default audio sink in the system
 and plays it back.
 
-In the pipeline above:
+In the pipeline above:
 
 #. Using the *queue* element after *avtpsrc* ensures packet reception is not
    blocked in case any downstream element blocks the pipeline.
@@ -579,7 +579,7 @@ Step 1: Run the following command to generate the CVF stream on the AVB talker:
         gst-launch-1.0 clockselect. \( clock-id=realtime \
             videotestsrc is-live=true ! video/x-raw,width=720,height=480,framerate=30/1 ! \
             clockoverlay ! vaapih264enc ! h264parse config-interval=-1 ! \
-            avtpcvfpay processing-deadline=20000000 mtt=2000000 tu=125000 streamid=0xAABBCCDDEEFF000A ! \
+            avtpcvfpay processing-deadline=20000000 mtt=2000000 tu=125000 streamid=0xAABBCCDDEEFF000A ! \
             avtpsink ifname=eth0.5 priority=3 processing-deadline=20000000 \)
 
 Similar to the audio talker pipeline, the *videotestsrc* element generates the
@@ -587,20 +587,20 @@ video stream to transmit over AVTP. The *clockoverlay* element adds a
 wall-clock time on the top-left corner of the video (we use this information to
 check playback synchronization, more on this later). The *vaapih264enc* element
 encodes the stream into H.264 and the *h264parse* element parses it so the
-output capabilities are set correctly. The *avtpcvfpay* element then
+output capabilities are set correctly. The *avtpcvfpay* element then
 encapsulates it into CVF AVTPDUs which are finally transmitted by the
-*avtpsink* element. If *vaapih264enc* isn't available in your system, you may
+*avtpsink* element. If *vaapih264enc* isn't available in your system, you may
 use another H.264 encoder instead, such as *x264enc*.
 
 Note that we set the ``config-interval=-1`` property from *h264parse* to ensure
 H.264 stream metadata is in-band so the H.264 decoder running by the AVB
-listener application is able to actually decode it. Also note we use a
+listener application is able to actually decode it. Also note we use a
 *processing-deadline* of 20ms as opposed to 0ms used on audio pipeline. We
 chose this value due this pipeline being more "heavy" on processing -
 generating and encoding video, adding overlays, etc. The correct value for this
 property depends on the pipeline and the system it runs on.
 
-Step 2: While the AVB stream is being transmitted through the network, run the
+Step 2: While the AVB stream is being transmitted through the network, run the
 listener and play it back.
 
 On the AVB listener:
@@ -609,8 +609,8 @@ On the AVB listener:
 
         gst-launch-1.0 clockselect. \( clock-id=realtime \
             avtpsrc ifname=eth0.5 ! avtpcvfdepay streamid=0xAABBCCDDEEFF000A ! \
-            queue max-size-bytes=0 max-size-buffers=0 max-size-time=0 ! \
-            vaapih264dec ! videoconvert ! clockoverlay halignment=right ! autovideosink \)
+            queue max-size-bytes=0 max-size-buffers=0 max-size-time=0 ! \
+            vaapih264dec ! videoconvert ! clockoverlay halignment=right ! autovideosink \)
 
 *avtpsrc* receives AVTPDUs from the network, *avtpcvfdepay* extracts the H.264
 NAL units, *vaapih264dec* decodes the stream, *clockoveraly* adds a wall clock
@@ -655,16 +655,16 @@ Follow these steps to stream contents from a file, using the ALSA Framework:
 
 Step 1: Convert the PCM samples within that file from little endian into big
 endian format, before pushing them to the AAF device. To achieve that, define
-a converter device and add it to the */etc/asound.conf* file:
+a converter device and add it to the */etc/asound.conf* file:
 
 .. code:: console
 
-        pcm.converter1 {
-                type linear
-                slave {
-                        pcm aaf0
-                        format S16_BE
-                }
+        pcm.converter1 {
+                type linear
+                slave {
+                        pcm aaf0
+                        format S16_BE
+                }
         }
 
 Step 2: Use *aplay* to read PCM samples from the file and play them back in the
@@ -686,13 +686,13 @@ The GStreamer Way
 From a WAV File
 ^^^^^^^^^^^^^^^
 
-To stream contents from a WAV file, use the *filesrc* element and run the
+To stream contents from a WAV file, use the *filesrc* element and run the
 command:
 
 .. code:: console
 
         gst-launch-1.0 clockselect. \( clock-id=realtime \
-            filesrc location=piano2.wav ! wavparse ! audioconvert ! \
+            filesrc location=piano2.wav ! wavparse ! audioconvert ! \
             audiobuffersplit output-buffer-duration=12/48000 ! \
             avtpaafpay mtt=50000000 tu=1000000 streamid=0xAABBCCDDEEFF000B processing-deadline=0 ! \
             avtpsink ifname=eth0.5 address=01:AA:AA:AA:AA:AA priority=2 processing-deadline=0 \)
@@ -749,7 +749,7 @@ This command lists the capture devices detected in the system. It provides
 information about the devices alongside a ``card X (...) device Y``.
 Considering ``card 1 (...) device 0`` is the microphone device, move to Step 2.
 
-Step 2: Use the *arecord* and *aplay* pair to get PCM samples from the
+Step 2: Use the *arecord* and *aplay* pair to get PCM samples from the
 microphone device loop them into the AAF device as shown:
 
 .. code:: console
@@ -783,13 +783,13 @@ about, along with their properties. It includes brief tips on using them, such
 as ``gst-launch-1.0 v4l2src ! ...``. Use this information to create an
 appropriate pipeline.
 
-Step 2.A: To use a microphone as the source of a pipeline stream, use *alsasrc*
+Step 2.A: To use a microphone as the source of a pipeline stream, use *alsasrc*
 element as shown:
 
 .. code:: console
 
         gst-launch-1.0 clockselect. \( clock-id=realtime \
-            alsasrc device=hw:1,0 ! audioconvert ! \
+            alsasrc device=hw:1,0 ! audioconvert ! \
             audio/x-raw,format=S16BE,channels=2,rate=48000 ! \
             audiobuffersplit output-buffer-duration=12/48000 ! \
             avtpaafpay mtt=50000000 tu=1000000 streamid=0xAABBCCDDEEFF000B processing-deadline=0 ! \
@@ -807,14 +807,14 @@ the *v4l2src* element as shown:
             avtpsink ifname=eth0.5 priority=3 processing-deadline=20000000 \)
 
 Here, *videoconvert* element converts output from *v4l2src* element to the
-video/x-raw filter specified, creating a video stream with the features
+video/x-raw filter specified, creating a video stream with the features
 expected by the H.264 encoder.
 
 Running Multiple Talker Applications on the Same Host
 -----------------------------------------------------
 
 This section describes how to run multiple talker applications on the same
-host. In addition to the streams described in :ref:`qdiscs-config-label`, two
+host. In addition to the streams described in :ref:`qdiscs-config-label`, two
 more streams are included as follows:
 
 * Stream C: SR class B, AVTP Audio Format, PCM 16-bit sample, 8 kHz, mono, 2
@@ -823,7 +823,7 @@ more streams are included as follows:
 * Stream D: SR class B, AVTP Audio Format, PCM 16-bit sample, 48 kHz, 6
   channels, 12 frames per AVTPDU.
 
-First, reconfigure CBS to accommodate the two new streams. Configure the qdiscs
+First, reconfigure CBS to accommodate the two new streams. Configure the qdiscs
 as shown.
 
 .. code:: console
@@ -835,8 +835,8 @@ as shown.
 The ALSA Way
 ~~~~~~~~~~~~
 
-To run multiple streams you need to add new AAF devices to ALSA configuration
-file (one for each stream). We could do the same thing done in
+To run multiple streams you need to add new AAF devices to ALSA configuration
+file (one for each stream). We could do the same thing done in
 :ref:`example-alsa-label`, but instead we're going to leverage the ALSA plugin
 runtime configuration. Instead of defining AAF devices statically, you can do
 it dynamically by the time you specify the device.
@@ -844,47 +844,47 @@ it dynamically by the time you specify the device.
 Follow these steps to run multiple talker applications on one host using the
 ALSA Framework:
 
-Step 1: Replace the *pcm.aaf0* device in the /etc/asound.conf file by the
+Step 1: Replace the *pcm.aaf0* device in the /etc/asound.conf file by the
 device shown below:
 
 .. code:: console
 
         pcm.aaf {
-                @args [ IFNAME ADDR PRIO STREAMID MTT UNCERTAINTY FRAMES TOLERANCE ]
-                @args.IFNAME {
-                        type string
-                }
-                @args.ADDR {
-                        type string
-                }
-                @args.PRIO {
-                        type integer
-                }
-                @args.STREAMID {
-                        type string
-                }
-                @args.MTT {
-                        type integer
-                }
-                @args.UNCERTAINTY {
-                        type integer
-                }
-                @args.FRAMES {
-                        type integer
-                }
-                @args.TOLERANCE {
-                        type integer
-                }
+                @args [ IFNAME ADDR PRIO STREAMID MTT UNCERTAINTY FRAMES TOLERANCE ]
+                @args.IFNAME {
+                        type string
+                }
+                @args.ADDR {
+                        type string
+                }
+                @args.PRIO {
+                        type integer
+                }
+                @args.STREAMID {
+                        type string
+                }
+                @args.MTT {
+                        type integer
+                }
+                @args.UNCERTAINTY {
+                        type integer
+                }
+                @args.FRAMES {
+                        type integer
+                }
+                @args.TOLERANCE {
+                        type integer
+                }
 
-                type aaf
-                ifname $IFNAME
-                addr $ADDR
-                prio $PRIO
-                streamid $STREAMID
-                mtt $MTT
-                time_uncertainty $UNCERTAINTY
-                frames_per_pdu $FRAMES
-                ptime_tolerance $TOLERANCE
+                type aaf
+                ifname $IFNAME
+                addr $ADDR
+                prio $PRIO
+                streamid $STREAMID
+                mtt $MTT
+                time_uncertainty $UNCERTAINTY
+                frames_per_pdu $FRAMES
+                ptime_tolerance $TOLERANCE
         }
 
 Step 2: Run multiple instances of *speaker-test* (one for each AVB audio
@@ -916,7 +916,7 @@ Note that you can check if each stream is running properly on listener, by
 adapting listener sample command shown in :ref:`example-alsa-label` (remember
 to account for streamid, frequency and number of channels differences). Note
 that by default, ALSA will not mix different audio streams, so you will only
-be able to listen to one audio stream each time. You can use a mixer plugin if
+be able to listen to one audio stream each time. You can use a mixer plugin if
 you want to mix.
 
 The GStreamer Way
@@ -1012,7 +1012,7 @@ I get "Unknown qdisc etf" when trying to set up ETF Qdisc on Ubuntu Disco (19.04
 While Ubuntu Disco has kernel 5.0, it has iproute2 4.18. Update iproute2
 package. You can install it from sources following `these instructions
 <https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/about>`_.
- Alternatively, you can install it from Ubuntu Eoan (19.10) following `these
+ Alternatively, you can install it from Ubuntu Eoan (19.10) following `these
 other instructions
 <https://help.ubuntu.com/community/PinningHowto%23Recommended_alternative_to_pinning>`_.
 
@@ -1030,7 +1030,7 @@ and priority 98.
 
 .. code:: console
 
-        sudo chrt --fifo 98 speaker-test -p 12500 -F S16_BE -c 2 -r 48000 -D aaf0
+        sudo chrt --fifo 98 speaker-test -p 12500 -F S16_BE -c 2 -r 48000 -D aaf0
 
 .. [#] Prerolling is a technique GStreamer uses to ensure smooth playing. The first
        frame is processed by the pipeline, but is not played by the sink until

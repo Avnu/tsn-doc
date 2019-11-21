@@ -38,7 +38,7 @@ will enable you to configure Linux Qdiscs and enable hardware offloading.
 Configuring CBS Qdisc
 ---------------------
 
-The CBS algorithm shapes the transmission according to the bandwidth that has
+The CBS algorithm shapes the transmission according to the bandwidth that has
 been reserved on a given outbound queue. This feature was introduced to IEEE
 802.1Q to enable Audio/Video Bridging (AVB) on top of Local Area Networks
 (LANs). AVB systems rely on CBS to determine the amount of buffering required
@@ -49,7 +49,7 @@ Follow these steps to configure the CBS Qdisc:
 
 Step 1: The CBS operates on a per-queue basis. To expose the hardware
 transmission queues use the MQPRIO qdisc. MQPRIO does more than just expose the
-hardware transmission queues, it also defines how Linux network priorities map
+hardware transmission queues, it also defines how Linux network priorities map
 into traffic classes and how traffic classes map into hardware queues. The
 command-line example below shows how to configure MQPRIO qdisc for Intel(R)
 Ethernet Controller I210 which has 4 transmission queues.
@@ -64,7 +64,7 @@ Ethernet Controller I210 which has 4 transmission queues.
 
 After running this command:
 
-* MQPRIO is installed as root qdisc oneth0 interface with handle ID 6666;
+* MQPRIO is installed as root qdisc oneth0 interface with handle ID 6666;
 
 * 3 different traffic classes are defined (from 0 to 2), where Linux priority 3
   maps into traffic class 0, Linux priority 2 maps into traffic class 1, and
@@ -165,7 +165,7 @@ feature.
 
         sudo tc qdisc add dev eth0 parent 6666:1 etf \
                 clockid CLOCK_TAI \
-                delta 500000 \
+                delta 500000 \
                 offload
 
 The ``clockid`` parameter specifies which clock is utilized to set the
@@ -194,18 +194,18 @@ Which should have output:
 
 .. code:: console
 
-        T: 0 (11795) P:80 I:200 C: 726864 Min:          1 Act:        2 Avg:        1 Max:           6
-        T: 1 (11796) P:80 I:200 C: 726861 Min:          1 Act:        1 Avg:        1 Max:          10
-        T: 2 (11797) P:80 I:200 C: 726858 Min:          1 Act:        1 Avg:        1 Max:          78
-        T: 3 (11798) P:80 I:200 C: 726855 Min:          1 Act:        1 Avg:        1 Max:          49
-        T: 4 (11799) P:80 I:200 C: 726852 Min:          1 Act:        1 Avg:        1 Max:          43
-        T: 5 (11800) P:80 I:200 C: 726831 Min:          1 Act:        1 Avg:        1 Max:          10
-        T: 6 (11801) P:80 I:200 C: 726846 Min:          1 Act:        2 Avg:        1 Max:          27
-        T: 7 (11802) P:80 I:200 C: 726843 Min:          1 Act:        1 Avg:        1 Max:           7
-        T: 8 (11803) P:80 I:200 C: 726840 Min:          1 Act:        2 Avg:        1 Max:          94
-        T: 9 (11804) P:80 I:200 C: 726838 Min:          1 Act:        1 Avg:        1 Max:          12
-        T:10 (11805) P:80 I:200 C: 726835 Min:          1 Act:        1 Avg:        1 Max:          14
-        T:11 (11806) P:80 I:200 C: 726832 Min:          1 Act:        1 Avg:        1 Max:          18
+        T: 0 (11795) P:80 I:200 C: 726864 Min:          1 Act:        2 Avg:        1 Max:           6
+        T: 1 (11796) P:80 I:200 C: 726861 Min:          1 Act:        1 Avg:        1 Max:          10
+        T: 2 (11797) P:80 I:200 C: 726858 Min:          1 Act:        1 Avg:        1 Max:          78
+        T: 3 (11798) P:80 I:200 C: 726855 Min:          1 Act:        1 Avg:        1 Max:          49
+        T: 4 (11799) P:80 I:200 C: 726852 Min:          1 Act:        1 Avg:        1 Max:          43
+        T: 5 (11800) P:80 I:200 C: 726831 Min:          1 Act:        1 Avg:        1 Max:          10
+        T: 6 (11801) P:80 I:200 C: 726846 Min:          1 Act:        2 Avg:        1 Max:          27
+        T: 7 (11802) P:80 I:200 C: 726843 Min:          1 Act:        1 Avg:        1 Max:           7
+        T: 8 (11803) P:80 I:200 C: 726840 Min:          1 Act:        2 Avg:        1 Max:          94
+        T: 9 (11804) P:80 I:200 C: 726838 Min:          1 Act:        1 Avg:        1 Max:          12
+        T:10 (11805) P:80 I:200 C: 726835 Min:          1 Act:        1 Avg:        1 Max:          14
+        T:11 (11806) P:80 I:200 C: 726832 Min:          1 Act:        1 Avg:        1 Max:          18
 
 Would indicate that the minimum value of ``delta`` that can be used
 should be greater than 94us, and in real use cases, a safety margin
@@ -245,7 +245,7 @@ hardware offload isn't supported. However, EST can still be leveraged since
 TAPRIO provides a TxTime-assisted implementation (available since kernel 5.3)
 and a pure software implementation. In Tx-Time-assisted mode, the LaunchTime
 feature is used to schedule packet transmissions, emulating the EST feature.
-The NIC must support LaunchTime to be able to use that mode. If not, use the
+The NIC must support LaunchTime to be able to use that mode. If not, use the
 pure software implementation. This tutorial uses the Intel(R) Ethernet
 Controller I210 which supports LaunchTime, thereby setting TAPRIO up for
 using the TxTime-assisted mode.
@@ -280,7 +280,7 @@ To achieve that, configure TAPRIO qdisc as shown below:
                 txtime-delay 500000 \
                 clockid CLOCK_TAI
 
-The parameters ``num_tc``, map and queues are identical to MQPRIO so refer to
+The parameters ``num_tc``, map and queues are identical to MQPRIO so refer to
 :ref:`cbs-config-label` for details. The way TAPRIO is configured, only one
 hardware queue is enabled. The other parameters are described as follows. For
 further details on TAPRIO configuration, check tc-taprio(8) manpage.
@@ -305,8 +305,8 @@ further details on TAPRIO configuration, check tc-taprio(8) manpage.
 * flags: control which additional flags are sent to taprio, in this case, we
   are enabling TxTime-assisted mode.
 
-* txtime-delay: this argument is only used in TxTime-assisted mode, and allows
-  to control the minimum time the transmission time of a packet is set in the
+* txtime-delay: this argument is only used in TxTime-assisted mode, and allows
+  to control the minimum time the transmission time of a packet is set in the
   future;
 
 * clockid: defines against which clock reference these timestamps should be
@@ -321,11 +321,11 @@ can be installed as follows:
 
         sudo tc qdisc replace dev eth0 parent 100:1 etf \
                 clockid CLOCK_TAI \
-                delta 500000 \
+                delta 500000 \
                 offload \
                 skip_sock_check
 
 Once both TAPRIO and ETF qdiscs are properly setup, the traffic generated by
-all applications running on top of eth0 interface are scheduled according to
+all applications running on top of eth0 interface are scheduled according to
 the GCL set configured.
 
