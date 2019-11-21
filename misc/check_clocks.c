@@ -84,7 +84,6 @@ struct ptp_hdr {
 	uint16_t	seq_id;
 	uint8_t		control;
 	int8_t		log_interval;
-
 } __attribute__((packed));
 
 struct mgmt_msg {
@@ -120,8 +119,8 @@ struct resp_time_stat {
 
 void print_usage(void)
 {
-        printf("Check Clocks verifies the state of local clocks to ensure"
-                " a sane TSN configuration\n");
+	printf("Check Clocks verifies the state of local clocks to ensure"
+	       " a sane TSN configuration\n");
 	printf("Usage: sudo ./check_clocks -d <interface name> \n");
 	printf("Options for check_clocks are\n");
 	printf(" -d <TSN Ethernet interface name>. This is required\n");
@@ -453,10 +452,10 @@ int main(int argc, char** argv)
 		{ "verbose",    no_argument,            &verbose,        1  },
 		{ "help",       no_argument,            NULL,           'h' },
 		{ 0 }
-        };
+	};
 
-        while ((ret = getopt_long(argc, argv, ":d:hv", longopts, NULL)) != -1) {
-                switch (ret) {
+	while ((ret = getopt_long(argc, argv, ":d:hv", longopts, NULL)) != -1) {
+		switch (ret) {
 		case 'd':
 			strncpy(ifname, optarg, sizeof(ifname) - 1);
 			break;
@@ -479,13 +478,13 @@ int main(int argc, char** argv)
 			print_usage();
 			return EXIT_FAILURE;
 		}
-        }
+	}
 
-        if (ifname[0] == '\0') {
-                fprintf(stderr, "Interface name is required\n");
-                print_usage();
-                return EXIT_FAILURE;
-        }
+	if (ifname[0] == '\0') {
+		fprintf(stderr, "Interface name is required\n");
+		print_usage();
+		return EXIT_FAILURE;
+	}
 
 	/* The Bitwise OR of the return values is intentional */
 	ret = check_local_clock(ifname, verbose) | check_ptp_offset();
