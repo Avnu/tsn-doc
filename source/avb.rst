@@ -1011,7 +1011,7 @@ I get "Unknown qdisc etf" when trying to set up ETF Qdisc on Ubuntu Disco (19.04
 While Ubuntu Disco has kernel 5.0, it has iproute2 4.18. Update iproute2
 package. You can install it from sources following `these instructions
 <https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/about>`_.
- Alternatively, you can install it from Ubuntu Eoan (19.10) following `these
+Alternatively, you can install it from Ubuntu Eoan (19.10) following `these
 other instructions
 <https://help.ubuntu.com/community/PinningHowto%23Recommended_alternative_to_pinning>`_.
 
