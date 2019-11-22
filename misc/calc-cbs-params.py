@@ -134,9 +134,9 @@ def main():
         dest='streams',
         type=parse_stream_params,
         required=True)
-    parser.add_argument('-S', dest='link_speed', default=1000000.0, type=float,
+    parser.add_argument('-S', dest='link_speed', default=1000000, type=int,
                         help='Link speed in kbps')
-    parser.add_argument('-s', dest='frame_non_sr', default=1542.0, type=float,
+    parser.add_argument('-s', dest='frame_non_sr', default=1542, type=int,
                         help='Maximum frame size from non-SR traffic')
     args = parser.parse_args()
 
