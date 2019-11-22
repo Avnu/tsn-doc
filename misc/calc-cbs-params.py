@@ -8,7 +8,6 @@
 
 import argparse
 import math
-import sys
 
 AAF_OVERHEAD = 24  # AVTP stream header
 CVF_H264_OVERHEAD = 30  # AVTP stream header + H264 ts field + FU-A headers
@@ -91,7 +90,7 @@ def calc_sr_class_params(streams):
 def parse_stream_params(string):
     try:
         params = dict(map(lambda pair: pair.split('='), string.split(',')))
-    except ValueError as e:
+    except ValueError:
         raise argparse.ArgumentTypeError('Invalid argument format')
 
     if len(params) > 4:
