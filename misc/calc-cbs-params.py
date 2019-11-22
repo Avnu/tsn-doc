@@ -89,7 +89,7 @@ def calc_sr_class_params(streams):
 
 def parse_stream_params(string):
     try:
-        params = dict(map(lambda pair: pair.split('='), string.split(',')))
+        params = dict(pair.split("=") for pair in string.split(','))
     except ValueError:
         raise argparse.ArgumentTypeError('Invalid argument format')
 
@@ -143,8 +143,8 @@ def main():
     max_frame_size_a = 0
     idleslope_a = 0
 
-    streams_a = filter(lambda p: p['class'] == 'a', args.streams)
-    streams_b = filter(lambda p: p['class'] == 'b', args.streams)
+    streams_a = (s for s in args.streams if s['class'] == 'a')
+    streams_b = (s for s in args.streams if s['class'] == 'b')
 
     max_frame_size_a, idleslope_a = calc_sr_class_params(streams_a)
     sendslope_a = idleslope_a - args.link_speed
