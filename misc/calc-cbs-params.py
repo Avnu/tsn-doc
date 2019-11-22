@@ -153,8 +153,8 @@ def main():
                                                   args.link_speed,
                                                   args.frame_non_sr,
                                                   max_frame_size_a)
-    print("Class A: idleslope %d sendslope %d hicredit %d locredit %d" %
-          (idleslope_a, sendslope_a, hicredit_a, locredit_a))
+    print((f'Class A: idleslope {idleslope_a} sendslope {sendslope_a} '
+           f'hicredit {hicredit_a} locredit {locredit_a}'))
 
     max_frame_size_b, idleslope_b = calc_sr_class_params(streams_b)
     sendslope_b = idleslope_b - args.link_speed
@@ -165,8 +165,8 @@ def main():
                                                   args.frame_non_sr,
                                                   max_frame_size_a,
                                                   max_frame_size_b)
-    print("Class B: idleslope %d sendslope %d hicredit %d locredit %d" %
-          (idleslope_b, sendslope_b, hicredit_b, locredit_b))
+    print((f'Class B: idleslope {idleslope_b} sendslope {sendslope_b} '
+           f'hicredit {hicredit_b} locredit {locredit_b}'))
 
 
 if __name__ == '__main__':
