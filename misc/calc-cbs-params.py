@@ -84,7 +84,7 @@ def calc_sr_class_params(streams):
         frame_size = calc_frame_size(stream)
         idleslope += int(stream['rate']) * frame_size * 8 / 1000
         max_frame_size = max(max_frame_size, frame_size)
-    return max_frame_size, idleslope
+    return max_frame_size, math.ceil(idleslope)
 
 
 def parse_stream_params(string):
