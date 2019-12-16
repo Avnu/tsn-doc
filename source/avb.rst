@@ -37,7 +37,10 @@ System Requirements
 -------------------
 
 This tutorial has been validated on two desktop machines with Intel(R) Ethernet
-Controller I210 connected back-to-back and Linux kernel version 4.19.
+Controller I210 connected back-to-back and Linux kernel version 4.19. However,
+only the machine acting as "Talker" needs a TSN capabable Ethernet controller
+and a recent kernel version, the "Listener" machine can have an ordinary
+Ethernet controller and an older kernel version.
 
 Plugins Installation
 --------------------
