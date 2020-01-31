@@ -102,7 +102,8 @@ Once UTC-TAI offset is properly set, synchronize the System clock with PHC.
                 --transportSpecific=1 -w -m
 
 The ``-s`` option specifies the PHC from ``eth0`` interface as the master clock
-while the ``-c`` option specifies the System clock as slave clock. In the
+while the ``-c`` option specifies the System clock as subordinate (AKA "slave"
+defined by IEEE Std. 801.1AS\ :sup:`TM`\ )clock. In the
 command above PHC disciplines the System clock, that is, the system clock is
 adjusted. The ``--transportSpecific`` option is required when running phc2sys
 in a gPTP domain. The ``--step_threshold`` is set so phc2sys converges faster
@@ -114,7 +115,7 @@ phc2sys(8) manpage.
 Checking Clocks Synchronization
 -------------------------------
 
-On ptp4l, the slave devices report out the time offset calculated from the
+On ptp4l, the subordinate devices report out the time offset calculated from the
 master. This information can be used to determine whether the systems have been
 synchronized. The output for ptp4l is:
 
@@ -127,7 +128,7 @@ synchronized. The output for ptp4l is:
         ptp4l[5374022.736]: rms   50 max   82 freq -36271 +/-  64 delay   -14 +/-   0
         ptp4l[5374023.736]: rms   81 max   86 freq -36413 +/-  17 delay   -14 +/-   0
 
-The ``rms`` value reported by ptp4l once the slave has locked with the GM shows
+The ``rms`` value reported by ptp4l once the subordinate has locked with the GM shows
 the root mean square of the time offset between the PHC and the GM clock. If
 ptp4l consistently reports ``rms`` lower than 100 ns, the PHC is synchronized.
 
@@ -176,7 +177,7 @@ Due to the static nature of the automotive network, AVnu has specified the
 <http://avnu.org/wp-content/uploads/2014/05/Automotive-Ethernet-AVB-Func-Interop-Spec-v1.5-Public.pdf>`_
 which does some optimizations to gPTP to improve startup time and reduce
 network load. The main difference from gPTP is that the BMCA is disabled so
-each device is statically assigned as master or slave.
+each device is statically assigned as master or subordinate.
 
 Linux PTP also supports the Automotive Profile. To run ptp4l in that mode, the
 command-line is the same as presented in :ref:`phc-sync-label` but with a
@@ -191,7 +192,7 @@ examples:
         sudo ptp4l -i eth0 -f configs/automotive-slave.cfg --step_threshold=1 -m
 
 Both these config files are available in the configs folder in Linux PTP
-source code. The slave devices should also configure the
+source code. The subordinate devices should also configure the
 ``servo_offset_threshold`` and ``servo_num_offset_values`` config options. More
 information about the config options is available in ptp4l(8) manpage.
 
