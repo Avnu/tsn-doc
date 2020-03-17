@@ -54,7 +54,7 @@ install them:
 
         sudo apt install build-essential git meson flex bison glib2.0 \
                 libcmocka-dev autoconf libtool autopoint libncurses-dev \
-                libpulse-dev
+                libpulse-dev gettext
 
 In the instructions below, all plugins artifacts are installed in
 ``/usr/local`` so make sure your environment variables considered it.
