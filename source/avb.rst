@@ -155,7 +155,7 @@ Step 1: Install GStreamer core:
         meson build --prefix=/usr/local
         ninja -C build
         sudo ninja -C build install
-        sudo setcap cap_net_raw+ep /usr/local/bin/gst-launch-1.0
+        sudo setcap cap_net_raw,cap_net_admin+ep /usr/local/bin/gst-launch-1.0
 
 Last command ensures that gst-launch-1.0 tool has permission to access network
 over layer 2, as needed by TSN applications.
