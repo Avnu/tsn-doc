@@ -1013,7 +1013,7 @@ package. You can install it from sources following `these instructions
 <https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/about>`_.
 Alternatively, you can install it from Ubuntu Eoan (19.10) following `these
 other instructions
-<https://help.ubuntu.com/community/PinningHowto%23Recommended_alternative_to_pinning>`_.
+<https://help.ubuntu.com/community/PinningHowto#Recommended_alternative_to_pinning>`_.
 
 ALSA talker application fails while sending AVTPDUs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
