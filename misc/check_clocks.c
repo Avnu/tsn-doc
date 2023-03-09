@@ -375,7 +375,7 @@ static int check_local_clock(char *ifname, int verbose)
 	uint64_t rt, tai, ptp, lat_rt, lat_tai, lat_ptp;
 	int64_t phc_rt, phc_tai;
 	struct timex t = { 0 };
-	int fd_ptp, err;
+	int fd_ptp;
 	int ret = EXIT_SUCCESS;
 
 	open_phc_fd(&fd_ptp, ifname);
