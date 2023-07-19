@@ -280,6 +280,29 @@ single instance (per network interface) of both the daemons is running at a
 time. ``pgrep`` can be useful to ensure only one instance of a particular
 process is running. Look at pgrep(1) manpage for more details.
 
+Check power management settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Several power management mechanisms exist that set components
+(such as the CPU, NIC and the PCIe bus between CPU and NIC)
+into modes where the power consumption is reduced if they are
+inactive for some time. However, in these modes it can take
+100 µs or more until they are fully active again.
+
+In such a situation, phc2sys might report timeouts or you might
+measure a large difference between System clock and PHC even
+though phc2sys reports only small offsets.
+
+If your BIOS supports it, enable the Intel(R) Time Coordinated
+Computing (TCC) mode that optimizes/disables several power management
+mechanisms for usage in real-time applications. Otherwise,
+you should at least disable PCIe ASPM, e.g. with
+
+.. code:: console
+
+        echo performance > /sys/module/pcie_aspm/parameters/policy
+
+
 References
 ----------
 
