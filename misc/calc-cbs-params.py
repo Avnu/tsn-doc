@@ -26,7 +26,9 @@ def calc_class_a_credits(
     # loCredit for SR class A are calculated following the
     # equations L-10 and L-12, respectively.
     hicredit = math.ceil(idleslope_a * frame_non_sr / link_speed)
-    locredit = math.ceil(sendslope_a * max_frame_size_a / link_speed)
+    # locredit is a negative number, because of sendslope, and thus
+    # we need to use math.floor() for the ceiling of a negative number
+    locredit = math.floor(sendslope_a * max_frame_size_a / link_speed)
     return hicredit, locredit
 
 
@@ -61,7 +63,8 @@ def calc_class_b_credits(
                          ((frame_non_sr / (link_speed - idleslope_a)) +
                           (max_frame_size_a / link_speed)))
     # loCredit B is calculated following equation L-2.
-    locredit = math.ceil(sendslope_b * max_frame_size_b / link_speed)
+    # see comment in calc_class_a_credits() for why we use floor here
+    locredit = math.floor(sendslope_b * max_frame_size_b / link_speed)
     return hicredit, locredit
 
 
