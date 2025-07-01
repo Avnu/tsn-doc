@@ -271,7 +271,7 @@ To achieve that, configure TAPRIO qdisc as shown below:
         sudo tc qdisc replace dev eth0 parent root handle 100 taprio \
                 num_tc 3 \
                 map 2 2 1 0 2 2 2 2 2 2 2 2 2 2 2 2 \
-                queues 1@0 1@0 1@0 \
+                queues 1@0 1@1 2@2 \
                 base-time 1000000000 \
                 sched-entry S 01 300000 \
                 sched-entry S 03 300000 \
