@@ -240,15 +240,32 @@ the qdisc defines how Linux networking stack priorities map into traffic
 classes and how traffic classes map into hardware queues. Besides that, it
 also enables the user to configure the GCL for a given interface.
 
-No NIC driver in kernel mainline currently supports the EST feature so TAPRIO
-hardware offload isn't supported. However, EST can still be leveraged since
-TAPRIO provides a TxTime-assisted implementation (available since kernel 5.3)
-and a pure software implementation. In Tx-Time-assisted mode, the LaunchTime
-feature is used to schedule packet transmissions, emulating the EST feature.
-The NIC must support LaunchTime to be able to use that mode. If not, use the
-pure software implementation. This tutorial uses the Intel(R) Ethernet
-Controller I210 which supports LaunchTime, thereby setting TAPRIO up for
-using the TxTime-assisted mode.
+There are several NIC drivers in mainline Linux that support the EST hardware
+feature. That includes:
+
+* Intel Ethernet controllers like I210 and I225/226
+* Synopsys Ethernet controllers like Ethernet QoS Controller
+* NXP Ethernet controllers like NETC
+* Several TSN switches from different vendors
+
+TAPRIO qdisc has different operating modes indicated by ``flags`` parameter:
+
+* Software only implementation: The TAPRIO qdisc will keep track of the gate
+  control lists in software and pass the packets to the NIC drivers at the
+  correct point in time. This mode can be set either by omitting ``flags`` or by
+  using ``flags 0x0``.
+
+* Tx-Time-assisted mode: This mode leverages the Tx Launch Time feature to
+  implement EST. This is useful for hardware which lacks support for full EST
+  hardware offload such as Intel I210 Ethernet controllers. This mode can be set
+  by using ``flags 0x1``.
+
+* Full hardware offload: The gate control lists will be directly programmed into
+  the hardware and the NIC will take care of sending packets at the correct
+  interval. This mode can be set by using ``flags 0x2``.
+
+The following tutorial shows how to setup TAPRIO with full hardware offload and
+Tx-Time-assisted mode.
 
 For the sake of exercise, let's say we have 3 traffic classes and we want to
 schedule traffic as follows:
@@ -276,9 +293,7 @@ To achieve that, configure TAPRIO qdisc as shown below:
                 sched-entry S 01 300000 \
                 sched-entry S 03 300000 \
                 sched-entry S 04 400000 \
-                flags 0x1 \
-                txtime-delay 500000 \
-                clockid CLOCK_TAI
+                flags 0x2
 
 The parameters ``num_tc``, map and queues are identical to MQPRIO so refer to
 :ref:`cbs-config-label` for details. The way TAPRIO is configured, only one
@@ -303,7 +318,33 @@ further details on TAPRIO configuration, check tc-taprio(8) manpage.
   duration of each interval in nanoseconds.
 
 * flags: control which additional flags are sent to taprio, in this case, we
-  are enabling TxTime-assisted mode.
+  are enabling hardware offload mode.
+
+There are NICs which do not support full hardware offload such as Intel I210
+Ethernet Controller. However, EST can still be leveraged since TAPRIO provides a
+TxTime-assisted implementation (available since kernel 5.3) and a pure software
+implementation. In Tx-Time-assisted mode, the LaunchTime feature is used to
+schedule packet transmissions, emulating the EST feature.  The NIC must support
+LaunchTime to be able to use that mode. If not, use the pure software
+implementation. This tutorial uses the Intel(R) Ethernet Controller I210 which
+supports LaunchTime, thereby setting TAPRIO up for using the TxTime-assisted
+mode.
+
+.. code:: console
+
+        sudo tc qdisc replace dev eth0 parent root handle 100 taprio \
+                num_tc 3 \
+                map 2 2 1 0 2 2 2 2 2 2 2 2 2 2 2 2 \
+                queues 1@0 1@1 2@2 \
+                base-time 1000000000 \
+                sched-entry S 01 300000 \
+                sched-entry S 03 300000 \
+                sched-entry S 04 400000 \
+                flags 0x1 \
+                txtime-delay 500000 \
+                clockid CLOCK_TAI
+
+In this case there are two additional parameters:
 
 * txtime-delay: this argument is only used in TxTime-assisted mode, and allows
   to control the minimum time the transmission time of a packet is set in the
