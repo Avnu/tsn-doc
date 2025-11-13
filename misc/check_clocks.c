@@ -27,6 +27,7 @@
 #include <byteswap.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 #define ONE_SEC 1000000000LL
 /*
@@ -374,7 +375,7 @@ static int check_local_clock(char *ifname, int verbose)
 	uint64_t rt, tai, ptp, lat_rt, lat_tai, lat_ptp;
 	int64_t phc_rt, phc_tai;
 	struct timex t = { 0 };
-	int fd_ptp, err;
+	int fd_ptp;
 	int ret = EXIT_SUCCESS;
 
 	open_phc_fd(&fd_ptp, ifname);
@@ -407,14 +408,14 @@ static int check_local_clock(char *ifname, int verbose)
 	phc_tai = ptp - tai;
 
 	if (verbose) {
-		printf("rt tstamp:\t%lu\n", rt);
-		printf("tai tstamp:\t%lu\n", tai);
-		printf("phc tstamp:\t%lu\n", ptp);
-		printf("rt latency:\t%lu\n", lat_rt);
-		printf("tai latency:\t%lu\n", lat_tai);
-		printf("phc latency:\t%lu\n", lat_ptp);
-		printf("phc-rt delta:\t%ld\n", phc_rt);
-		printf("phc-tai delta:\t%ld\n\n", phc_tai);
+		printf("rt tstamp:\t%"PRIu64"\n", rt);
+		printf("tai tstamp:\t%"PRIu64"\n", tai);
+		printf("phc tstamp:\t%"PRIu64"\n", ptp);
+		printf("rt latency:\t%"PRIu64"\n", lat_rt);
+		printf("tai latency:\t%"PRIu64"\n", lat_tai);
+		printf("phc latency:\t%"PRIu64"\n", lat_ptp);
+		printf("phc-rt delta:\t%"PRId64"\n", phc_rt);
+		printf("phc-tai delta:\t%"PRId64"\n\n", phc_tai);
 	}
 
 	if (llabs(phc_rt - UTC_OFFSET * ONE_SEC) >= 50000) {
